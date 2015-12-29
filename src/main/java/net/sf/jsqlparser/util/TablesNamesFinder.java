@@ -423,6 +423,10 @@ public class TablesNamesFinder implements SelectVisitor, FromItemVisitor, Expres
     }
 
     @Override
+    public void visit(TrimExpression eexpr) {
+    }
+
+    @Override
     public void visit(LateralSubSelect lateralSubSelect) {
         lateralSubSelect.getSubSelect().getSelectBody().accept(this);
     }

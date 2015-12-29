@@ -488,6 +488,15 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
     }
 
     @Override
+    public void visit(TrimExpression eexpr) {
+        buffer.append("TRIM(");
+        eexpr.getTrimExpressionLeft().accept(this);
+        buffer.append(" FROM ");
+        eexpr.getTrimExpressionRight().accept(this);
+        buffer.append(')');
+    }
+    
+    @Override
     public void visit(MultiExpressionList multiExprList) {
         for (Iterator<ExpressionList> it = multiExprList.getExprList().iterator(); it.hasNext();) {
             it.next().accept(this);

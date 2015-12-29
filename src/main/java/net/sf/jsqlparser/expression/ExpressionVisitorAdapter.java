@@ -310,6 +310,12 @@ public class ExpressionVisitorAdapter implements ExpressionVisitor, ItemsListVis
     }
 
     @Override
+    public void visit(TrimExpression expr) {
+        expr.getTrimExpressionLeft().accept(this);
+        expr.getTrimExpressionRight().accept(this);
+    }
+
+    @Override
     public void visit(IntervalExpression expr) {
     }
 

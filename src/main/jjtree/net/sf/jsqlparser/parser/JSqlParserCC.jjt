@@ -178,6 +178,7 @@ TOKEN: /* SQL Keywords. prefixed with K_ to avoid name clashes */
 |   <K_OVER:"OVER">
 |   <K_PARTITION:"PARTITION">
 |   <K_EXTRACT:"EXTRACT">
+|   <K_TRIM:"TRIM">
 |	<K_LATERAL:"LATERAL">
 |	<K_MATERIALIZED:"MATERIALIZED">
 |   <K_INTERVAL:"INTERVAL">
@@ -659,7 +660,7 @@ String RelObjectName() :
 {	Token tk = null; }
 {
 	(tk=<S_IDENTIFIER> | tk=<S_QUOTED_IDENTIFIER>
-      | tk=<K_CAST> | tk=<K_DO> | tk=<K_EXTRACT> | tk=<K_FIRST> | tk=<K_FOLLOWING> 
+      | tk=<K_CAST> | tk=<K_DO> | tk=<K_EXTRACT> | tk=<K_TRIM> | tk=<K_FIRST> | tk=<K_FOLLOWING> 
       | tk=<K_LAST> | tk=<K_MATERIALIZED> | tk=<K_NULLS> | tk=<K_PARTITION> | tk=<K_RANGE> 
       | tk=<K_ROW> | tk=<K_ROWS> | tk=<K_SIBLINGS> | tk=<K_VALUE> | tk=<K_XML>
       | tk=<K_COLUMN> | tk=<K_REPLACE> | tk=<K_TRUNCATE> | tk=<K_KEY> | tk=<K_ANY>
@@ -2010,6 +2011,8 @@ Expression PrimaryExpression():
     | LOOKAHEAD(WithinGroupExpression()) retval=WithinGroupExpression()
 
 	| LOOKAHEAD(ExtractExpression()) retval=ExtractExpression()
+	
+	| LOOKAHEAD(TrimExpression()) retval=TrimExpression()
 
     | retval=MySQLGroupConcat()
 
@@ -2259,6 +2262,25 @@ ExtractExpression ExtractExpression() :
 		return retval;
 	}
 }
+
+TrimExpression TrimExpression() :
+{
+	TrimExpression retval = new TrimExpression();
+    Expression trimExpressionLeft = null;
+    Expression trimExpressionRight = null;
+}
+{
+	<K_TRIM>
+	"("
+		trimExpressionLeft=SimpleExpression() { retval.setTrimExpressionLeft(trimExpressionLeft); }
+		<K_FROM>
+		trimExpressionRight=SimpleExpression() { retval.setTrimExpressionRight(trimExpressionRight); }
+	")"
+	{
+		return retval;
+	}
+}
+
 
 CastExpression CastExpression():
 {
