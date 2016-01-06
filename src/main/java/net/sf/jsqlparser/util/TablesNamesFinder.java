@@ -36,6 +36,8 @@ import net.sf.jsqlparser.statement.update.Update;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.sf.jsqlparser.statement.truncate.Analyse;
 import net.sf.jsqlparser.statement.SetStatement;
 import net.sf.jsqlparser.statement.StatementVisitor;
 import net.sf.jsqlparser.statement.Statements;
@@ -584,7 +586,7 @@ public class TablesNamesFinder implements SelectVisitor, FromItemVisitor, Expres
     public void visit(Truncate truncate) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     @Override
     public void visit(CreateIndex createIndex) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -646,6 +648,11 @@ public class TablesNamesFinder implements SelectVisitor, FromItemVisitor, Expres
 
     @Override
     public void visit(TableFunction valuesList) {
+    }
+    
+    @Override
+    public void visit(Analyse analyse){
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

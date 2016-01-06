@@ -22,8 +22,8 @@
 package net.sf.jsqlparser.util.deparser;
 
 import java.util.Iterator;
-import net.sf.jsqlparser.statement.SetStatement;
 
+import net.sf.jsqlparser.statement.SetStatement;
 import net.sf.jsqlparser.statement.StatementVisitor;
 import net.sf.jsqlparser.statement.Statements;
 import net.sf.jsqlparser.statement.alter.Alter;
@@ -38,6 +38,7 @@ import net.sf.jsqlparser.statement.merge.Merge;
 import net.sf.jsqlparser.statement.replace.Replace;
 import net.sf.jsqlparser.statement.select.Select;
 import net.sf.jsqlparser.statement.select.WithItem;
+import net.sf.jsqlparser.statement.truncate.Analyse;
 import net.sf.jsqlparser.statement.truncate.Truncate;
 import net.sf.jsqlparser.statement.update.Update;
 
@@ -126,6 +127,11 @@ public class StatementDeParser implements StatementVisitor {
     @Override
     public void visit(Truncate truncate) {
     }
+    
+    @Override
+    public void visit(Analyse analyse) {
+    }
+
 
     @Override
     public void visit(Update update) {

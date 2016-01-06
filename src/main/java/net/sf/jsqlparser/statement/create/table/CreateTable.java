@@ -23,12 +23,12 @@ package net.sf.jsqlparser.statement.create.table;
 
 import java.util.List;
 
+import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.StatementVisitor;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
-import net.sf.jsqlparser.statement.select.SelectBody;
 
 /**
  * A "CREATE TABLE" statement
@@ -43,6 +43,10 @@ public class CreateTable implements Statement {
     private List<Index> indexes;
     private Select select;
     private boolean ifNotExists = false;
+    private String distStyle;
+    private Column distKeyColumn;
+    private List<Column> sortKeyColumns;
+    private String sortKeyOpts;
 
     @Override
     public void accept(StatementVisitor statementVisitor) {
@@ -129,7 +133,23 @@ public class CreateTable implements Statement {
     public void setIfNotExists(boolean ifNotExists) {
         this.ifNotExists = ifNotExists;
     }
-
+    
+    public void setDistStyle(String distStyle) {
+        this.distStyle = distStyle;
+    }
+    
+    public void setDistKeyColumn(Column distKeyColumn) {
+        this.distKeyColumn = distKeyColumn;
+    }
+    
+    public void setSortKeyOpts(String sortKeyOpts) {
+        this.sortKeyOpts = sortKeyOpts;
+    }
+    
+    public void setSortKeyColumns(List<Column> sortKeyColumns) {
+        this.sortKeyColumns = sortKeyColumns;
+    }
+    
     @Override
     public String toString() {
         String sql = "";
@@ -140,6 +160,20 @@ public class CreateTable implements Statement {
                 "TABLE " + (ifNotExists?"IF NOT EXISTS ":"") + table;
 
         if (select != null) {
+            if (distStyle != null){
+                sql += " DISTSTYLE " + distStyle + " ";
+            }
+            
+            if (distKeyColumn != null){
+                sql += " DISTKEY (" + distKeyColumn + ") ";
+            }
+            
+            if (sortKeyColumns != null){
+                if (sortKeyOpts != null){
+                    sql += " " + sortKeyOpts + " "; 
+                }
+                sql += " SORTKEY (" + PlainSelect.getStringList(sortKeyColumns) + ") ";  
+            }
             sql += " AS " + select.toString();
         } else {
             sql += " (";
