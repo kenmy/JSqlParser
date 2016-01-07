@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sf.jsqlparser.statement.truncate.Analyse;
+import net.sf.jsqlparser.statement.truncate.Commit;
 import net.sf.jsqlparser.statement.SetStatement;
 import net.sf.jsqlparser.statement.StatementVisitor;
 import net.sf.jsqlparser.statement.Statements;
@@ -652,6 +653,11 @@ public class TablesNamesFinder implements SelectVisitor, FromItemVisitor, Expres
     
     @Override
     public void visit(Analyse analyse){
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void visit(Commit commit){
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

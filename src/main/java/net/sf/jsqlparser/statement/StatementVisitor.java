@@ -33,6 +33,7 @@ import net.sf.jsqlparser.statement.merge.Merge;
 import net.sf.jsqlparser.statement.replace.Replace;
 import net.sf.jsqlparser.statement.select.Select;
 import net.sf.jsqlparser.statement.truncate.Analyse;
+import net.sf.jsqlparser.statement.truncate.Commit;
 import net.sf.jsqlparser.statement.truncate.Truncate;
 import net.sf.jsqlparser.statement.update.Update;
 
@@ -68,5 +69,7 @@ public interface StatementVisitor {
     
     void visit(Merge merge);
     
-    void visit(Analyse analyse);    
+    void visit(Analyse analyse);   
+
+    void visit(Commit analyse);  
 }
