@@ -31,6 +31,7 @@ import net.sf.jsqlparser.statement.StatementVisitor;
 public class Truncate implements Statement {
 
 	private Table table;
+	private boolean hasTable;
 
 	@Override
 	public void accept(StatementVisitor statementVisitor) {
@@ -44,9 +45,13 @@ public class Truncate implements Statement {
 	public void setTable(Table table) {
 		this.table = table;
 	}
+	
+	public void setHasTable(boolean hasTable){
+		this.hasTable = hasTable;
+	}
 
 	@Override
 	public String toString() {
-		return "TRUNCATE TABLE " + table;
+		return "TRUNCATE " + (hasTable ? "TABLE ": "") + table;
 	}
 }

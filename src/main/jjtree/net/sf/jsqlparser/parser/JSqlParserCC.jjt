@@ -2901,7 +2901,8 @@ Truncate Truncate():
 	Table table;
 }
 {
-	<K_TRUNCATE> <K_TABLE>
+	<K_TRUNCATE>
+	[<K_TABLE> { truncate.setHasTable(true); }]
 	table=Table() { truncate.setTable(table); }
 	{
 		return truncate;
