@@ -240,6 +240,7 @@ TOKEN: /* SQL Keywords. prefixed with K_ to avoid name clashes */
 |	<K_INTERLEAVED : "INTERLEAVED">
 |	<K_SORTKEY : "SORTKEY">
 |	<K_ANALYZE : "ANALYZE">
+|	<K_DEFAULT : "DEFAULT">
 }
 
 TOKEN : /* Numeric Constants */
@@ -260,6 +261,7 @@ SPECIAL_TOKEN:
 {
    < LINE_COMMENT: "--"(~["\r","\n"])*>
 |  < MULTI_LINE_COMMENT: "/*" (~["*"])* "*" ("*" | (~["*","/"] (~["*"])* "*"))* "/">
+|  < PG_COMMAND: "\\"(~["\r","\n"])*>
 }
 
 TOKEN:
@@ -2945,6 +2947,7 @@ Alter Alter():
     ForeignKeyIndex fkIndex = null;
     Table fkTable = null;
     Token alterDrop = null;
+    Expression defaultExpr = null;
 }
 {
 	<K_ALTER> <K_TABLE> table=Table() { alter.setTable(table); } 
@@ -2960,6 +2963,8 @@ Alter Alter():
                alter.setColumnName(tk.image);
                alter.setDataType(dataType);
             }
+           [<K_DEFAULT> defaultExpr=PrimaryExpression()           {
+           	alter.setDefaultValue(defaultExpr);           }]
         )
         |
         ( <K_PRIMARY> <K_KEY> columnNames=ColumnsNamesList() { alter.setPkColumns(columnNames); } )

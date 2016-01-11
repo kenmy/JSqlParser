@@ -22,6 +22,8 @@
 package net.sf.jsqlparser.statement.alter;
 
 import java.util.List;
+
+import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.StatementVisitor;
@@ -46,6 +48,8 @@ public class Alter implements Statement {
     private String constraintName;
 
     private boolean onDeleteCascade;
+    private List<String> fkSourceColumns;
+    private Expression defaultValue = null;
 
     public boolean isOnDeleteCascade() {
         return onDeleteCascade;
@@ -103,8 +107,6 @@ public class Alter implements Statement {
         this.operation = operation;
     }
 
-    private List<String> fkSourceColumns;
-
     public List<String> getFkSourceColumns() {
         return fkSourceColumns;
     }
@@ -127,6 +129,10 @@ public class Alter implements Statement {
 
     public void setColumnName(String columnName) {
         this.columnName = columnName;
+    }
+    
+    public void setDefaultValue(Expression value){
+        this.defaultValue = value;
     }
 
     public String getConstraintName() {
@@ -190,6 +196,9 @@ public class Alter implements Statement {
             b.append("COLUMN ").append(columnName);
             if (dataType != null) {
                 b.append(" ").append(dataType.toString());
+            }
+            if(defaultValue != null){
+                b.append(" DEFAULT ").append(defaultValue.toString());
             }
         } else if (constraintName != null) {
             b.append("CONSTRAINT ").append(constraintName);
