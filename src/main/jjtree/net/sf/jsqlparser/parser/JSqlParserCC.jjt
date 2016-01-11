@@ -241,6 +241,8 @@ TOKEN: /* SQL Keywords. prefixed with K_ to avoid name clashes */
 |	<K_SORTKEY : "SORTKEY">
 |	<K_ANALYZE : "ANALYZE">
 |	<K_DEFAULT : "DEFAULT">
+|	<K_TRUE : "TRUE">
+|	<K_FALSE : "FALSE">
 }
 
 TOKEN : /* Numeric Constants */
@@ -1663,6 +1665,7 @@ Expression SQLCondition():
 	LOOKAHEAD(InExpression()) result=InExpression()
 	| LOOKAHEAD(Between()) result=Between()
 	| LOOKAHEAD(IsNullExpression()) result=IsNullExpression()
+	| LOOKAHEAD(IsTrueOrFalseExpression()) result=IsTrueOrFalseExpression()	
 	| LOOKAHEAD(ExistsExpression()) result=ExistsExpression()
 	|  result=LikeExpression()
 	)
@@ -1749,6 +1752,27 @@ Expression IsNullExpression():
 		return result;
 	}
 }
+
+Expression IsTrueOrFalseExpression():
+{
+	IsTrueOrFalseExpression result = new IsTrueOrFalseExpression();
+	Expression leftExpression = null;
+}
+{
+	(
+	[<K_NOT> { result.setNot(true); } ]
+	leftExpression=SimpleExpression() <K_IS>
+		(
+			<K_TRUE> { result.setIsTrue(true); }			| <K_FALSE>{ result.setIsTrue(false); }
+		)
+	)
+
+	{
+		result.setLeftExpression(leftExpression);
+		return result;
+	}
+}
+
 
 Expression ExistsExpression():
 {

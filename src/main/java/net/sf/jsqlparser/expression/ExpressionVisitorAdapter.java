@@ -185,6 +185,11 @@ public class ExpressionVisitorAdapter implements ExpressionVisitor, ItemsListVis
     }
 
     @Override
+    public void visit(IsTrueOrFalseExpression isTrueOrFalseExpression) {
+        isTrueOrFalseExpression.getLeftExpression().accept(this);
+    }
+
+    @Override
     public void visit(LikeExpression expr) {
         visitBinaryExpression(expr);
     }
@@ -463,5 +468,4 @@ public class ExpressionVisitorAdapter implements ExpressionVisitor, ItemsListVis
     public void visit(OracleHint hint) {
 
     }
-        
 }

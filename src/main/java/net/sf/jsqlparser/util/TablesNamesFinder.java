@@ -256,6 +256,10 @@ public class TablesNamesFinder implements SelectVisitor, FromItemVisitor, Expres
     }
 
     @Override
+    public void visit(IsTrueOrFalseExpression isTrueOrFalseExpression) {
+    }
+    
+    @Override
     public void visit(JdbcParameter jdbcParameter) {
     }
 

@@ -176,6 +176,14 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
             buffer.append(" IS NULL");
         }
     }
+    
+    @Override
+    public void visit(IsTrueOrFalseExpression isTrueOrFalseExpression) {
+        isTrueOrFalseExpression.getLeftExpression().accept(this);
+        buffer.append(isTrueOrFalseExpression.isNot() ? " NOT": "")
+              .append(" IS")
+              .append(isTrueOrFalseExpression.isTrue() ? " TRUE": " FALSE");
+    }
 
     @Override
     public void visit(JdbcParameter jdbcParameter) {
@@ -583,5 +591,4 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
     public void visit(OracleHint hint) {
         buffer.append(hint.toString());
     }
-    
 }
