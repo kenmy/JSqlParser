@@ -596,4 +596,13 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
     public void visit(OracleHint hint) {
         buffer.append(hint.toString());
     }
+
+    @Override
+    public void visit(PositionExpression positionExpression) {
+        buffer.append("POSITION(");
+        positionExpression.getPositionExpressionLeft().accept(this);
+        buffer.append(" IN ");
+        positionExpression.getPositionExpressionRight().accept(this);
+        buffer.append(')');
+    }
 }

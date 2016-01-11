@@ -171,5 +171,7 @@ public interface ExpressionVisitor {
     void visit(OracleHint hint);
 
     void visit(UserName userName);
+
+    void visit(PositionExpression positionExpression);
     
 }

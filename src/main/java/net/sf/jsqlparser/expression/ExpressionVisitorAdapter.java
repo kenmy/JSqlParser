@@ -473,4 +473,10 @@ public class ExpressionVisitorAdapter implements ExpressionVisitor, ItemsListVis
     public void visit(OracleHint hint) {
 
     }
+
+    @Override
+    public void visit(PositionExpression positionExpression) {
+        positionExpression.getPositionExpressionLeft().accept(this);
+        positionExpression.getPositionExpressionRight().accept(this);
+    }
 }

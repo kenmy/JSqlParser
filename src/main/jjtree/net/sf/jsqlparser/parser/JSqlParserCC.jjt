@@ -179,6 +179,7 @@ TOKEN: /* SQL Keywords. prefixed with K_ to avoid name clashes */
 |   <K_PARTITION:"PARTITION">
 |   <K_EXTRACT:"EXTRACT">
 |   <K_TRIM:"TRIM">
+|   <K_POSITION:"POSITION">
 |	<K_LATERAL:"LATERAL">
 |	<K_MATERIALIZED:"MATERIALIZED">
 |   <K_INTERVAL:"INTERVAL">
@@ -684,7 +685,7 @@ String RelObjectName() :
 {	Token tk = null; }
 {
 	(tk=<S_IDENTIFIER> | tk=<S_QUOTED_IDENTIFIER>
-      | tk=<K_CAST> | tk=<K_DO> | tk=<K_EXTRACT> | tk=<K_TRIM> | tk=<K_FIRST> | tk=<K_FOLLOWING> 
+      | tk=<K_CAST> | tk=<K_DO> | tk=<K_EXTRACT> | tk=<K_TRIM> | tk=<K_POSITION> | tk=<K_FIRST> | tk=<K_FOLLOWING> 
       | tk=<K_LAST> | tk=<K_MATERIALIZED> | tk=<K_NULLS> | tk=<K_PARTITION> | tk=<K_RANGE> 
       | tk=<K_ROW> | tk=<K_ROWS> | tk=<K_SIBLINGS> | tk=<K_VALUE> | tk=<K_XML>
       | tk=<K_COLUMN> | tk=<K_REPLACE> | tk=<K_TRUNCATE> | tk=<K_ANALYZE> | tk=<K_COMMIT> | tk=<K_KEY> | tk=<K_ANY>
@@ -2060,6 +2061,8 @@ Expression PrimaryExpression():
 	
 	| LOOKAHEAD(TrimExpression()) retval=TrimExpression()
 
+	| LOOKAHEAD(PositionExpression()) retval=PositionExpression()
+
     | retval=MySQLGroupConcat()
 
     | LOOKAHEAD([sign="+" | sign="-"] JsonExpression()) [sign="+" | sign="-"] retval=JsonExpression()
@@ -2327,6 +2330,23 @@ TrimExpression TrimExpression() :
 	}
 }
 
+PositionExpression PositionExpression() :
+{
+	PositionExpression retval = new PositionExpression();
+    Expression positionExpressionLeft = null;
+    Expression positionExpressionRight = null;
+}
+{
+	<K_POSITION>
+	"("
+		positionExpressionLeft=SimpleExpression() { retval.setPositionExpressionLeft(positionExpressionLeft); }
+		<K_IN>
+		positionExpressionRight=SimpleExpression() { retval.setPositionExpressionRight(positionExpressionRight); }
+	")"
+	{
+		return retval;
+	}
+}
 
 CastExpression CastExpression():
 {
