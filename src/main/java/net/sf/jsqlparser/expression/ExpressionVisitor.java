@@ -169,5 +169,7 @@ public interface ExpressionVisitor {
     void visit(RowConstructor rowConstructor);
     
     void visit(OracleHint hint);
+
+    void visit(UserName userName);
     
 }

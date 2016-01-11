@@ -553,6 +553,11 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
     public void visit(UserVariable var) {
         buffer.append(var.toString());
     }
+    
+    @Override
+    public void visit(UserName var) {
+        buffer.append(var.toString());
+    }
 
     @Override
     public void visit(NumericBind bind) {

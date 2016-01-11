@@ -378,6 +378,11 @@ public class ExpressionVisitorAdapter implements ExpressionVisitor, ItemsListVis
     }
 
     @Override
+    public void visit(UserName var) {
+
+    }    
+    
+    @Override
     public void visit(NumericBind bind) {
 
     }

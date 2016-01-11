@@ -243,6 +243,8 @@ TOKEN: /* SQL Keywords. prefixed with K_ to avoid name clashes */
 |	<K_DEFAULT : "DEFAULT">
 |	<K_TRUE : "TRUE">
 |	<K_FALSE : "FALSE">
+|	<K_GRANT :"GRANT">
+|	<K_TO :"TO">
 }
 
 TOKEN : /* Numeric Constants */
@@ -324,6 +326,8 @@ Statement SingleStatement() :
     stm = Execute()
     |
     stm = Set()
+    |
+    stm = Grant()
     )
     { return stm; }
 }
@@ -2937,6 +2941,50 @@ Truncate Truncate():
 	table=Table() { truncate.setTable(table); }
 	{
 		return truncate;
+	}
+}
+
+UserName UserName(): 
+{
+	UserName userName = new UserName();
+	Token token;
+}
+{
+    token=<S_IDENTIFIER> 
+    { 
+        userName.setName(token.image); 
+        return userName;
+    }
+}
+
+Grant Grant():
+{
+	Grant grant = new Grant();
+	Table table;
+	Token tk;
+	UserName user;
+}
+{
+	<K_GRANT>
+	(		tk=<K_SELECT>
+		|
+		tk=<K_INSERT>
+		|
+		tk=<K_UPDATE>
+		|
+		tk=<K_DELETE>
+		|
+		tk=<K_REFERENCES>
+	)	{		grant.setGrantType(Grant.GrantType.valueOf(tk.image));
+	}
+	<K_ON>
+	[<K_TABLE>]
+	table=Table() { grant.setTable(table); }
+	<K_TO>
+	user=UserName()	{
+		grant.setUserName(user);	}
+	{
+		return grant;
 	}
 }
 

@@ -39,6 +39,7 @@ import java.util.List;
 
 import net.sf.jsqlparser.statement.truncate.Analyse;
 import net.sf.jsqlparser.statement.truncate.Commit;
+import net.sf.jsqlparser.statement.truncate.Grant;
 import net.sf.jsqlparser.statement.SetStatement;
 import net.sf.jsqlparser.statement.StatementVisitor;
 import net.sf.jsqlparser.statement.Statements;
@@ -512,6 +513,10 @@ public class TablesNamesFinder implements SelectVisitor, FromItemVisitor, Expres
     }
 
     @Override
+    public void visit(UserName var) {
+    }
+
+    @Override
     public void visit(NumericBind bind) {
 
     }
@@ -665,6 +670,11 @@ public class TablesNamesFinder implements SelectVisitor, FromItemVisitor, Expres
 
     @Override
     public void visit(Commit commit){
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void visit(Grant grant) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
