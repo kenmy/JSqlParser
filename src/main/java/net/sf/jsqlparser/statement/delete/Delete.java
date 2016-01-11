@@ -37,6 +37,7 @@ public class Delete implements Statement {
 	private Expression where;
 	private Limit limit;
 	private List<OrderByElement> orderByElements;
+    private List<Table> usingTables;
 
 	public List<OrderByElement> getOrderByElements() {
 		return orderByElements;
@@ -74,10 +75,19 @@ public class Delete implements Statement {
 	public void setLimit(Limit limit) {
 		this.limit = limit;
 	}
+	
+	public void setUsingTables(List<Table> usingTables){
+	    this.usingTables = usingTables;
+	}
+
+	public List<Table> getUsingTables() {
+        return usingTables;
+    }
 
 	@Override
 	public String toString() {
 		return "DELETE FROM " + table +
+		        (!usingTables.isEmpty() ? " USING " + PlainSelect.getStringList(usingTables, true, false) : "") +
 				((where != null) ? " WHERE " + where : "") +
 				(orderByElements!=null? PlainSelect.orderByToString(orderByElements):"") +
 				(limit != null ? limit : "");

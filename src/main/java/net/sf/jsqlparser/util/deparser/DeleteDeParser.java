@@ -23,6 +23,7 @@ package net.sf.jsqlparser.util.deparser;
 
 import net.sf.jsqlparser.expression.ExpressionVisitor;
 import net.sf.jsqlparser.statement.delete.Delete;
+import net.sf.jsqlparser.statement.select.PlainSelect;
 
 /**
  * A class to de-parse (that is, tranform from JSqlParser hierarchy into a
@@ -54,6 +55,9 @@ public class DeleteDeParser {
 
 	public void deParse(Delete delete) {
 		buffer.append("DELETE FROM ").append(delete.getTable().getFullyQualifiedName());
+		if (!delete.getUsingTables().isEmpty()){
+		    buffer.append(" USING ").append(PlainSelect.getStringList(delete.getUsingTables(), true, false));
+		}
 		if (delete.getWhere() != null) {
 			buffer.append(" WHERE ");
 			delete.getWhere().accept(expressionVisitor);

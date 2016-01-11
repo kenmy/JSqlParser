@@ -567,17 +567,22 @@ Delete Delete():
 {
 	Delete delete = new Delete();
 	Table table = null;
+	Table tableUsing = null;
 	Expression where = null;
 	Limit limit = null;
 	List<OrderByElement> orderByElements;
+	List<Table> usingTables = new ArrayList<Table>();
 }
 {
     <K_DELETE> [<K_FROM>] table=TableWithAlias()
+    [<K_USING> 
+        ( tableUsing=TableWithAlias() { usingTables.add(tableUsing); } ("," tableUsing=TableWithAlias() { usingTables.add(tableUsing); } )* ) ]
     [where=WhereClause() { delete.setWhere(where); } ]
     [orderByElements = OrderByElements() { delete.setOrderByElements(orderByElements); } ]
     [limit=PlainLimit() {delete.setLimit(limit); } ]
     {
     	delete.setTable(table);
+	   	delete.setUsingTables(usingTables);
     	return delete;
     }
 }
@@ -2326,7 +2331,7 @@ Expression CaseWhenExpression():
     	    ( clause=WhenThenSearchCondition() { whenClauses.add(clause); } )+
              [<K_ELSE> elseExp=SimpleExpression()]
 		|
-		    switchExp=PrimaryExpression()
+		    switchExp=SimpleExpression()
              ( clause=WhenThenValue() { whenClauses.add(clause); } )*
              [<K_ELSE> elseExp=SimpleExpression()]
 	)

@@ -523,6 +523,9 @@ public class TablesNamesFinder implements SelectVisitor, FromItemVisitor, Expres
     @Override
     public void visit(Delete delete) {
         tables.add(delete.getTable().getName());
+        for(Table table : delete.getUsingTables()){
+            tables.add(table.getName());
+        }
         if (delete.getWhere() != null) {
             delete.getWhere().accept(this);
         }
