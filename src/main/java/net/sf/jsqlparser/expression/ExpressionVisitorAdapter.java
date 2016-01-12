@@ -479,4 +479,9 @@ public class ExpressionVisitorAdapter implements ExpressionVisitor, ItemsListVis
         positionExpression.getPositionExpressionLeft().accept(this);
         positionExpression.getPositionExpressionRight().accept(this);
     }
+
+    @Override
+    public void visit(BooleanValue booleanValue) {
+        
+    }
 }

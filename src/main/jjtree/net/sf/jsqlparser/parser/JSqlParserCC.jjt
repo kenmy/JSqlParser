@@ -2038,6 +2038,7 @@ Expression PrimaryExpression():
 	Token sign = null;
 	String tmp = "";
 	ColDataType type = null;
+	BooleanValue boolVal;
 }
 {
 (
@@ -2085,7 +2086,18 @@ Expression PrimaryExpression():
 
 	| token=<S_CHAR_LITERAL> { retval = new StringValue(token.image); }
 
-
+	| token=<K_TRUE>
+		{
+			boolVal = new BooleanValue();
+			boolVal.setValue("TRUE");
+			retval = boolVal;
+		}
+	| token=<K_FALSE>
+		{
+			boolVal = new BooleanValue();
+			boolVal.setValue("FALSE");
+			retval = boolVal;
+		}
 	| "{d" token=<S_CHAR_LITERAL> "}"  { retval = new DateValue(token.image); }
 
 	| "{t" token=<S_CHAR_LITERAL> "}"  { retval = new TimeValue(token.image); }

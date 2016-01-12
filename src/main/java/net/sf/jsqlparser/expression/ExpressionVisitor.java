@@ -173,5 +173,7 @@ public interface ExpressionVisitor {
     void visit(UserName userName);
 
     void visit(PositionExpression positionExpression);
+
+    void visit(BooleanValue booleanValue);
     
 }

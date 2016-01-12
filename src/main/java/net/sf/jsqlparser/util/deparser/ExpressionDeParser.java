@@ -605,4 +605,9 @@ public class ExpressionDeParser implements ExpressionVisitor, ItemsListVisitor {
         positionExpression.getPositionExpressionRight().accept(this);
         buffer.append(')');
     }
+
+    @Override
+    public void visit(BooleanValue booleanValue) {
+        buffer.append(booleanValue.toString());    
+    }
 }
